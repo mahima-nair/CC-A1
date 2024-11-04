@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="public/styles/main.css" />
+    <title>Permalist</title>
+  </head>
+<body>
+
+ 
+
+  <div class="box" id="heading">
+    <h1 id="listTitle">Mahima's Today's Task </h1> <!-- Replace with dynamic title if needed -->
+  </div>
+
+  <div class="box" id="listContainer">
+    <!-- Sample list items -->
+    <script>
+      const listItems = [
+        { id: 1, title: 'CC Assignment 1' },
+        { id: 2, title: 'CC Assignment 2' },
+        { id: 3, title: 'CC Assignment 3' }
+      ];
+
+      function renderList() {
+        const container = document.getElementById('listContainer');
+        
+        listItems.forEach(item => {
+          const itemDiv = document.createElement('div');
+          itemDiv.classList.add('item');
+          
+          itemDiv.innerHTML = `
+            <form action="/delete" method="post">
+              <input type="checkbox" onchange="this.submit()" name="deleteItemId" value="${item.id}">
+            </form>
+            <p id="title${item.id}">${item.title}</p>
+            <form class="edit" action="/edit" method="post">
+              <input type="hidden" name="updatedItemId" value="${item.id}">
+              <input id="input${item.id}" type="text" name="updatedItemTitle" value="${item.title}" autocomplete="off" hidden />
+              <button id="done${item.id}" class="edit" type="submit" hidden>
+                <img class="icon" src="/public/assets/icons/check-solid.svg" alt="tick image">
+              </button>
+            </form>
+            <button id="edit${item.id}" class="edit" onclick="handler('${item.id}')">
+              <img class="icon" src="/public/assets/icons/pencil-solid.svg" alt="pencil image">
+            </button>
+          `;
+          
+          container.appendChild(itemDiv);
+        });
+      }
+
+      function handler(id) {
+        document.getElementById("title" + id).setAttribute("hidden", true);
+        document.getElementById("edit" + id).setAttribute("hidden", true);
+        document.getElementById("done" + id).removeAttribute("hidden");
+        document.getElementById("input" + id).removeAttribute("hidden");
+      }
+
+      document.addEventListener('DOMContentLoaded', renderList);
+    </script>
+
+    <!-- Form to add new items -->
+    <form class="item" action="/add" method="post">
+      <input type="text" name="newItem" placeholder="New Item" autocomplete="off" autofocus />
+      <button class="add" type="submit" name="list" value="Your List Title Here">+</button>
+    </form>
+  </div>
+
+  <!-- Footer content -->
+  <div class="footer">
+    <!-- Include footer content manually or through client-side templating -->
+    <p>Footer Content</p>
+  </div>
+
+</body>
+</html>
